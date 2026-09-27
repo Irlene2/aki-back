@@ -1,0 +1,1 @@
+const router=require('express').Router();const c=require('../controllers/report.controller');const {authenticate,requirePermission}=require('../middlewares/auth');router.use(authenticate,requirePermission('reports.read'));router.get('/financial',c.financial);router.get('/dashboard',c.dashboard);module.exports=router;

@@ -1,0 +1,3 @@
+const http=require('http');const {Server}=require('socket.io');const app=require('./app');const env=require('./config/env');const {checkDatabase}=require('./config/database');
+const server=http.createServer(app);const io=new Server(server,{cors:{origin:env.corsOrigin==='*'?true:env.corsOrigin}});app.set('io',io);io.on('connection',socket=>{socket.on('join:order',id=>socket.join(`order:${id}`));});
+(async()=>{try{await checkDatabase();server.listen(env.port,()=>console.log(`AKI Delivery API em http://localhost:${env.port}`));}catch(e){console.error('Banco indisponível:',e.message);process.exit(1);}})();

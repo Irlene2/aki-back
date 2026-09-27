@@ -1,0 +1,1 @@
+const router=require('express').Router();const c=require('../controllers/stock.controller');const {authenticate,requirePermission}=require('../middlewares/auth');router.use(authenticate,requirePermission('stock.read'));router.get('/',c.list);router.post('/movements',requirePermission('stock.manage'),c.move);module.exports=router;

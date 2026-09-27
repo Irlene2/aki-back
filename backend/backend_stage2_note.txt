@@ -1,0 +1,1 @@
+Etapa 2 concluída: PostgreSQL + estrutura relacional + seed inicial.

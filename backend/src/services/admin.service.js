@@ -1,0 +1,5 @@
+const bcrypt=require('bcryptjs');const db=require('../config/database');
+exports.users=async()=> (await db.query(`SELECT u.id,u.name,u.email,u.phone,u.active,r.name role_name,u.created_at FROM users u JOIN roles r ON r.id=u.role_id ORDER BY u.created_at DESC`)).rows;
+exports.createUser=async(d)=>{const role=(await db.query('SELECT id FROM roles WHERE name=$1',[d.role])).rows[0];if(!role)throw Object.assign(new Error('Perfil inválido.'),{status:400});const hash=await bcrypt.hash(d.password,12);return (await db.query(`INSERT INTO users(role_id,name,email,phone,password_hash) VALUES($1,$2,$3,$4,$5) RETURNING id,name,email,phone,active,created_at`,[role.id,d.name,d.email,d.phone||null,hash])).rows[0]};
+exports.setActive=async(id,active)=> (await db.query('UPDATE users SET active=$1,updated_at=NOW() WHERE id=$2 RETURNING id,name,email,active',[active,id])).rows[0];
+exports.permissions=async()=> (await db.query(`SELECT r.name role,p.code,p.description FROM roles r LEFT JOIN role_permissions rp ON rp.role_id=r.id LEFT JOIN permissions p ON p.id=rp.permission_id ORDER BY r.name,p.code`)).rows;

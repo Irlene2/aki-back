@@ -1,0 +1,1 @@
+const router=require('express').Router();const c=require('../controllers/whatsapp.controller');const {authenticate,requirePermission}=require('../middlewares/auth');router.use(authenticate,requirePermission('orders.read'));router.get('/',c.list);router.post('/send',c.send);module.exports=router;

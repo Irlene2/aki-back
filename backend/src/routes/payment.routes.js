@@ -1,0 +1,1 @@
+const router=require('express').Router();const c=require('../controllers/payment.controller');const {authenticate,requirePermission}=require('../middlewares/auth');router.use(authenticate);router.get('/',requirePermission('payments.read'),c.list);router.patch('/:orderId',requirePermission('payments.manage'),c.update);module.exports=router;

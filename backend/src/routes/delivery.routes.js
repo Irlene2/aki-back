@@ -1,0 +1,1 @@
+const router=require('express').Router();const c=require('../controllers/delivery.controller');const {authenticate,requirePermission}=require('../middlewares/auth');router.use(authenticate);router.get('/:orderId',c.get);router.post('/:orderId/location',c.location);router.post('/:orderId/assign',requirePermission('deliveries.manage'),c.assign);module.exports=router;

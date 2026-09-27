@@ -1,0 +1,4 @@
+const db=require('../config/database');
+exports.list=async()=> (await db.query(`SELECT p.*,c.name category_name FROM products p LEFT JOIN categories c ON c.id=p.category_id WHERE p.active=true ORDER BY p.name`)).rows;
+exports.create=async(d)=> (await db.query(`INSERT INTO products(category_id,name,description,price,image_url,stock_quantity,minimum_stock) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING *`,[d.category_id||null,d.name,d.description||null,d.price,d.image_url||null,d.stock_quantity||0,d.minimum_stock||0])).rows[0];
+exports.update=async(id,d)=> (await db.query(`UPDATE products SET category_id=$1,name=$2,description=$3,price=$4,image_url=$5,stock_quantity=$6,minimum_stock=$7,updated_at=NOW() WHERE id=$8 RETURNING *`,[d.category_id||null,d.name,d.description||null,d.price,d.image_url||null,d.stock_quantity||0,d.minimum_stock||0,id])).rows[0];
